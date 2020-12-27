@@ -70,8 +70,11 @@ elif (number_hops == 3):
             hops_masses[0,ind,ind2] = current_IBU_proportion*IBU_target*final_volume*cdensity/(util[0]*hops_alphas[0]*10)
             hops_masses[1,ind,ind2] = current_IBU_proportion2*IBU_target*final_volume*cdensity/(util[1]*hops_alphas[1]*10)
             hops_masses[2,ind,ind2] = (1-current_IBU_proportion-current_IBU_proportion2)*IBU_target*final_volume*cdensity/(util[2]*hops_alphas[2]*10)
-    pass
-
+    for n in range(number_hops):
+        for ind,current_IBU_proportion in enumerate(mass_proportions_2hops):
+            for ind2,current_IBU_proportion2 in enumerate(mass_proportions_2hops[ind:]):
+                hops_masses[n,ind,ind2] = max(0,hops_masses[n,ind,ind2]) # just remove masses below 0, which just don't mean anything, until the contrary has proven true
+            
 # DISPLAY
 if (number_hops == 1):
     print('You need ' + '{0:.0f}'.format(hops_masses[0]) + ' grams of this hop! (alpha = ' + '{0:.0f}'.format(hops_alphas[0]) + ' %, boil time = ' + '{0:.0f}'.format(hops_times[0]) + ' min.)')
